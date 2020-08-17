@@ -84,6 +84,10 @@ All these exceptions are captured, logged and handled by `error.middleware.ts`
 
 Register the controller to the `App` object in `server.ts`.
 
+### Auth
+
+dns-mongo comes with JWT auth by default. It's designed to work in conjugate with a frontend framework.
+
 ### Guidelines
 
 - Order the imports in categories and order them in lexicographic order.
