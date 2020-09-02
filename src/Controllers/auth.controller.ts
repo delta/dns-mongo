@@ -265,6 +265,9 @@ class AuthController implements Controller {
             })
           );
         }
+      } else {
+        newUser.isVerified = true;
+        await newUser.save();
       }
 
       const tokenData = this.createToken(newUser);
