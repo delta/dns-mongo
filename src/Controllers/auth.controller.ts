@@ -197,6 +197,16 @@ class AuthController implements Controller {
     next: NextFunction
   ) => {
     const userData: CreateUserDto = req.body;
+    const isWebmail = /^[a-zA-Z0-9._%+-]+@nitt+\.edu$/.test(userData.email);
+
+    if (isWebmail)
+      return next(
+        new HttpException({
+          status: 401,
+          message: "Webmail doesn't require registration",
+          logger: this.logger,
+        })
+      );
 
     try {
       const dupEmail = await this.user.findOne({ email: userData.email });
