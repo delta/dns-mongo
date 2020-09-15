@@ -88,6 +88,15 @@ Register the controller to the `App` object in `server.ts`.
 
 dns-mongo comes with JWT auth by default. It's designed to work in conjugate with a frontend framework.
 
+Set ```controller.isProtected = true``` to protect **all** routes in the controller.
+
+### Extending Library Interfaces
+
+Setting up parameters like ```req.user```:
+- Add a custom type declaration at ```Interfaces/@types/``` with optional parameters.
+- Add the required Interface by extending the Required Library interface at ```Interfaces/..```
+- Add a [Type-Guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html#user-defined-type-guards) for the Custom Interface.
+
 ### Guidelines
 
 - Order the imports in categories and order them in lexicographic order.

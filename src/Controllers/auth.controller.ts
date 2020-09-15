@@ -25,6 +25,8 @@ import { sendMailForNewPassword, sendVerificationMail } from "../Utils/mailer";
 class AuthController implements Controller {
   public path = "/api/auth";
   public router = Router();
+  public isProtected = false;
+
   private user = userModel;
   private readonly logger = logger.getNamedLogger("Controller [User]");
 
