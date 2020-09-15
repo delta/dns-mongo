@@ -1,15 +1,14 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import config from "config";
 import * as jwt from "jsonwebtoken";
 import DataStoredInToken from "../Interfaces/controller/auth/dataStoredInToken.interface";
-import RequestWithUser from "../Interfaces/middleware/requestWithUser.interface";
 import userModel from "../Models/user.model";
 
 import HttpException from "../Classes/HttpException";
 import logger from "../Utils/logger";
 
 async function authMiddleware(
-  request: RequestWithUser,
+  request: Request,
   response: Response,
   next: NextFunction
 ) {
