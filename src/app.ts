@@ -40,7 +40,7 @@ class App {
 
     // Static Files
     this.app.use(
-      this.baseUrl + "/static",
+      "/static",
       express.static(path.join(__dirname, "..", "public"))
     );
 
@@ -53,7 +53,7 @@ class App {
 
   private initialiseControllers(controllers: Controller[]) {
     controllers.forEach((controller) => {
-      this.app.use(this.baseUrl, controller.router);
+      this.app.use(controller.router);
     });
   }
 
