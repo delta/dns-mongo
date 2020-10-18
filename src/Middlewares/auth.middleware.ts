@@ -47,7 +47,7 @@ async function authMiddleware(
   } else {
     next(
       new HttpException({
-        status: 400,
+        status: 401,
         message: "Auth Token Missing!",
         logger: logger.getNamedLogger("Middleware [validation]"),
       })

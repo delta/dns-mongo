@@ -456,7 +456,7 @@ class AuthController implements Controller {
   };
 
   private logOut = (req: Request, res: Response) => {
-    res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
+    res.setHeader("Set-Cookie", ["Authorization=;Max-age=0;Path=/"]);
     res.status(200).jsonp({
       status: 200,
       success: true,
