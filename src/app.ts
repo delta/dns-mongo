@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express, { Application, Router } from "express";
 import * as bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import * as path from "path";
@@ -6,6 +6,7 @@ import * as Logger from "bunyan";
 
 import Connect from "./connect";
 import errorMiddleware from "./Middlewares/error.middleware";
+import authMiddleware from "./Middlewares/auth.middleware";
 
 import AppInitialiser from "./Interfaces/misc/appInitialiser.interface";
 import Controller from "./Interfaces/controller/controller.interface";
@@ -52,9 +53,17 @@ class App {
   }
 
   private initialiseControllers(controllers: Controller[]) {
+    const protectedRouter = Router();
+    const unprotectedRouter = Router();
     controllers.forEach((controller) => {
-      this.app.use(this.baseUrl, controller.router);
+      if (controller.isProtected) {
+        protectedRouter.use(controller.router);
+      } else {
+        unprotectedRouter.use(controller.router);
+      }
     });
+    this.app.use(this.baseUrl, unprotectedRouter);
+    this.app.use(this.baseUrl, authMiddleware, protectedRouter);
   }
 
   private initialiseErrorHandlerMiddleware() {
