@@ -5,4 +5,8 @@ interface RequestWithUser extends Request {
   user?: User;
 }
 
-export default RequestWithUser;
+const isRequestWithUser = (req: Request | RequestWithUser): req is RequestWithUser => {
+  return !!req['user'];
+}
+
+export { RequestWithUser, isRequestWithUser };

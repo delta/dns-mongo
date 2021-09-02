@@ -25,6 +25,8 @@ import { sendMailForNewPassword, sendVerificationMail } from "../Utils/mailer";
 class AuthController implements Controller {
   public path = "/api/auth";
   public router = Router();
+  public isProtected = false;
+
   private user = userModel;
   private readonly logger = logger.getNamedLogger("Controller [User]");
 
@@ -104,7 +106,7 @@ class AuthController implements Controller {
         return res.status(200).jsonp({
           status: 200,
           success: true,
-          msg: "User successfully logged in!",
+          message: "User successfully logged in!",
         });
       } catch (err) {
         return next(
@@ -135,7 +137,18 @@ class AuthController implements Controller {
           })
         );
       } else {
-        let match = bcrypt.compare(password, oldUser.password);
+        let match;
+        try{
+          match = await bcrypt.compare(password, oldUser.password);
+        } catch(err){
+          return next(
+            new HttpException({
+              status: 500,
+              message: "Internal Server Error!",
+              logger: this.logger,
+            })
+          ); 
+        }
         if (match) {
           // if passwords match
           const tokenData = this.createToken(oldUser);
@@ -143,7 +156,7 @@ class AuthController implements Controller {
           return res.status(200).jsonp({
             status: 200,
             success: true,
-            msg: "User successfully logged in!",
+            message: "User successfully logged in!",
           });
         } else {
           return next(
@@ -170,13 +183,13 @@ class AuthController implements Controller {
         return res.status(200).jsonp({
           status: 200,
           success: true,
-          msg: "Username available!",
+          message: "Username available!",
         });
       } else {
         return res.status(200).jsonp({
           status: 200,
           success: true,
-          msg: "Username not available!",
+          message: "Username not available!",
         });
       }
     } catch (err) {
@@ -285,7 +298,7 @@ class AuthController implements Controller {
       return res.status(200).jsonp({
         status: 200,
         success: true,
-        msg: "User successfully registered!",
+        message: "User successfully registered!",
       });
     } catch (err) {
       return next(
@@ -337,7 +350,7 @@ class AuthController implements Controller {
         return res.status(200).jsonp({
           status: 200,
           success: true,
-          msg:
+          message:
             "An email for resetting password link has been sent to your registered email!",
         });
       }
@@ -377,7 +390,7 @@ class AuthController implements Controller {
           return res.status(200).jsonp({
             status: 200,
             success: true,
-            msg: "Password successfully changed!",
+            message: "Password successfully changed!",
           });
         } else {
           return next(
@@ -441,7 +454,7 @@ class AuthController implements Controller {
       return res.status(200).jsonp({
         status: 200,
         success: true,
-        msg: "User successfully verified!",
+        message: "User successfully verified!",
       });
     } catch (err) {
       return next(
@@ -460,7 +473,7 @@ class AuthController implements Controller {
     res.status(200).jsonp({
       status: 200,
       success: true,
-      msg: "User successfully logged out!",
+      message: "User successfully logged out!",
     });
   };
 
