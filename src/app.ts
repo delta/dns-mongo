@@ -41,7 +41,7 @@ class App {
 
     // Static Files
     this.app.use(
-      this.baseUrl + "/static",
+      "/static",
       express.static(path.join(__dirname, "..", "public"))
     );
 
